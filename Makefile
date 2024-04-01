@@ -560,13 +560,13 @@ coderd/database/dbmock/dbmock.go: coderd/database/db.go coderd/database/querier.
 tailnet/tailnettest/coordinatormock.go tailnet/tailnettest/multiagentmock.go tailnet/tailnettest/coordinateemock.go: tailnet/coordinator.go tailnet/multiagent.go
 	go generate ./tailnet/tailnettest/
 
-insightd/proto/insightd.pb.go: insightd/proto/insightd.proto
+inteld/proto/inteld.pb.go: inteld/proto/inteld.proto
 	protoc \
 		--go_out=. \
 		--go_opt=paths=source_relative \
 		--go-drpc_out=. \
 		--go-drpc_opt=paths=source_relative \
-		./insightd/proto/insightd.proto
+		./inteld/proto/inteld.proto
 
 tailnet/proto/tailnet.pb.go: tailnet/proto/tailnet.proto
 	protoc \
