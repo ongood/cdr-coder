@@ -1966,6 +1966,10 @@ func (q *FakeQuerier) GetAuthorizationUserRoles(_ context.Context, userID uuid.U
 	}, nil
 }
 
+func (q *FakeQuerier) GetConsistencyByIntelCohort(ctx context.Context) ([]database.GetConsistencyByIntelCohortRow, error) {
+	panic("not implemented")
+}
+
 func (q *FakeQuerier) GetDBCryptKeys(_ context.Context) ([]database.DBCryptKey, error) {
 	q.mutex.RLock()
 	defer q.mutex.RUnlock()
@@ -2424,6 +2428,15 @@ func (q *FakeQuerier) GetIntelCohortsMatchedByMachineIDs(_ context.Context, ids 
 		}
 	}
 	return rows, nil
+}
+
+func (q *FakeQuerier) GetIntelMachinesMatchingFilters(ctx context.Context, arg database.GetIntelMachinesMatchingFiltersParams) ([]database.GetIntelMachinesMatchingFiltersRow, error) {
+	err := validateDatabaseType(arg)
+	if err != nil {
+		return nil, err
+	}
+
+	panic("not implemented")
 }
 
 func (q *FakeQuerier) GetJFrogXrayScanByWorkspaceAndAgentID(_ context.Context, arg database.GetJFrogXrayScanByWorkspaceAndAgentIDParams) (database.JfrogXrayScan, error) {

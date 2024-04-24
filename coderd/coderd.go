@@ -834,6 +834,8 @@ func New(options *Options) *API {
 				})
 				r.Route("/intel", func(r chi.Router) {
 					r.Get("/serve", api.intelDaemonServe)
+					r.Get("/machines", api.intelMachines)
+					r.Get("/cohorts", api.intelCohorts)
 				})
 			})
 		})
