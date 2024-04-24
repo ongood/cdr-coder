@@ -5954,6 +5954,7 @@ func (q *FakeQuerier) InsertIntelInvocations(_ context.Context, arg database.Ins
 			BinaryVersion:    arg.BinaryVersion[i],
 			WorkingDirectory: arg.WorkingDirectory[i],
 			GitRemoteUrl:     arg.GitRemoteUrl[i],
+			ExitCode:         arg.ExitCode[i],
 			DurationMs:       arg.DurationMs[i],
 		})
 	}
