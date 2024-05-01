@@ -204,6 +204,10 @@ type Options struct {
 	DatabaseRolluper *dbrollup.Rolluper
 	// WorkspaceUsageTracker tracks workspace usage by the CLI.
 	WorkspaceUsageTracker *workspaceusage.Tracker
+
+	// IntelServerInvocationFlushInterval is the interval at which the intel
+	// server flushes invocations to the database.
+	IntelServerInvocationFlushInterval time.Duration
 }
 
 // @title Coder API
@@ -834,6 +838,8 @@ func New(options *Options) *API {
 				})
 				r.Route("/intel", func(r chi.Router) {
 					r.Get("/serve", api.intelDaemonServe)
+					r.Get("/report", api.intelReport)
+					r.Post("/report", api.postIntelReport)
 					r.Get("/machines", api.intelMachines)
 					r.Route("/cohorts", func(r chi.Router) {
 						r.Get("/", api.intelCohorts)
@@ -846,8 +852,6 @@ func New(options *Options) *API {
 							r.Delete("/", api.deleteIntelCohort)
 						})
 					})
-
-					r.Get("/report", api.intelReport)
 				})
 			})
 		})
