@@ -487,7 +487,6 @@ CREATE TABLE intel_cohorts (
     created_at timestamp with time zone NOT NULL,
     updated_at timestamp with time zone NOT NULL,
     name text NOT NULL,
-    display_name text NOT NULL,
     icon character varying(256) DEFAULT ''::character varying NOT NULL,
     description text NOT NULL,
     regex_operating_system character varying(255) DEFAULT '.*'::character varying NOT NULL,
@@ -1503,6 +1502,9 @@ ALTER TABLE ONLY groups
 
 ALTER TABLE ONLY groups
     ADD CONSTRAINT groups_pkey PRIMARY KEY (id);
+
+ALTER TABLE ONLY intel_cohorts
+    ADD CONSTRAINT intel_cohorts_organization_id_name_key UNIQUE (organization_id, name);
 
 ALTER TABLE ONLY intel_cohorts
     ADD CONSTRAINT intel_cohorts_pkey PRIMARY KEY (id);
