@@ -2442,6 +2442,10 @@ func (q *FakeQuerier) GetIntelCohortsMatchedByMachineIDs(_ context.Context, ids 
 	return rows, nil
 }
 
+func (q *FakeQuerier) GetIntelInvocationSummaries(ctx context.Context) ([]database.IntelInvocationSummary, error) {
+	panic("not implemented")
+}
+
 func (q *FakeQuerier) GetIntelMachinesMatchingFilters(_ context.Context, arg database.GetIntelMachinesMatchingFiltersParams) ([]database.GetIntelMachinesMatchingFiltersRow, error) {
 	err := validateDatabaseType(arg)
 	if err != nil {
@@ -2502,6 +2506,14 @@ func (q *FakeQuerier) GetIntelMachinesMatchingFilters(_ context.Context, arg dat
 		machines = machines[:arg.LimitOpt]
 	}
 	return machines, nil
+}
+
+func (q *FakeQuerier) GetIntelReportCommands(ctx context.Context, startsAt database.GetIntelReportCommandsParams) ([]database.GetIntelReportCommandsRow, error) {
+	panic("not implemented")
+}
+
+func (q *FakeQuerier) GetIntelReportGitRemotes(ctx context.Context, startsAt database.GetIntelReportGitRemotesParams) ([]database.GetIntelReportGitRemotesRow, error) {
+	panic("not implemented")
 }
 
 func (q *FakeQuerier) GetJFrogXrayScanByWorkspaceAndAgentID(_ context.Context, arg database.GetJFrogXrayScanByWorkspaceAndAgentIDParams) (database.JfrogXrayScan, error) {
@@ -6007,6 +6019,7 @@ func (q *FakeQuerier) InsertIntelInvocations(_ context.Context, arg database.Ins
 			CreatedAt:        arg.CreatedAt,
 			MachineID:        arg.MachineID,
 			UserID:           arg.UserID,
+			BinaryName:       arg.BinaryName[i],
 			BinaryHash:       arg.BinaryHash[i],
 			BinaryPath:       arg.BinaryPath[i],
 			BinaryArgs:       binaryArgs[i],
@@ -8414,6 +8427,10 @@ func (q *FakeQuerier) UpsertIntelCohort(_ context.Context, arg database.UpsertIn
 	}
 	q.intelCohorts = append(q.intelCohorts, cohort)
 	return cohort, nil
+}
+
+func (q *FakeQuerier) UpsertIntelInvocationSummaries(ctx context.Context) error {
+	panic("not implemented")
 }
 
 func (q *FakeQuerier) UpsertIntelMachine(_ context.Context, arg database.UpsertIntelMachineParams) (database.IntelMachine, error) {
