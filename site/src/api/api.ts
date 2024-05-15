@@ -505,6 +505,14 @@ class ApiMethods {
     return response.data;
   };
 
+  createOrganization = async (params: TypesGen.CreateOrganizationRequest) => {
+    const response = await this.axios.post<TypesGen.Organization>(
+      "/api/v2/organizations",
+      params,
+    );
+    return response.data;
+  };
+
   getOrganization = async (
     organizationId: string,
   ): Promise<TypesGen.Organization> => {

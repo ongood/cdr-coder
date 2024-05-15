@@ -12,6 +12,7 @@ import {
   Sidebar as BaseSidebar,
   SidebarNavItem,
 } from "components/Sidebar/Sidebar";
+import TeamsIcon from "@mui/icons-material/Groups";
 
 export const Sidebar: FC = () => {
   return (
@@ -21,6 +22,9 @@ export const Sidebar: FC = () => {
       </SidebarNavItem>
       <SidebarNavItem href="licenses" icon={ApprovalIcon}>
         Licenses
+      </SidebarNavItem>
+      <SidebarNavItem href="teams" icon={TeamsIcon}>
+        Teams
       </SidebarNavItem>
       <SidebarNavItem href="appearance" icon={Brush}>
         Appearance
