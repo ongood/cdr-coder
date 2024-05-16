@@ -140,3 +140,144 @@ func TestPostOrganizationsByUser(t *testing.T) {
 		require.NoError(t, err)
 	})
 }
+
+func TestPatchOrganizationsByUser(t *testing.T) {
+	t.Parallel()
+	t.Run("Conflict", func(t *testing.T) {
+		t.Parallel()
+		client := coderdtest.New(t, nil)
+		user := coderdtest.CreateFirstUser(t, client)
+
+		ctx, cancel := context.WithTimeout(context.Background(), testutil.WaitLong)
+		defer cancel()
+
+		originalOrg, err := client.Organization(ctx, user.OrganizationID)
+		require.NoError(t, err)
+		o, err := client.CreateOrganization(ctx, codersdk.CreateOrganizationRequest{
+			Name: "something-unique",
+		})
+		require.NoError(t, err)
+
+		_, err = client.UpdateOrganization(ctx, o.ID.String(), codersdk.UpdateOrganizationRequest{
+			Name: originalOrg.Name,
+		})
+		var apiErr *codersdk.Error
+		require.ErrorAs(t, err, &apiErr)
+		require.Equal(t, http.StatusConflict, apiErr.StatusCode())
+	})
+
+	t.Run("ReservedName", func(t *testing.T) {
+		t.Parallel()
+		client := coderdtest.New(t, nil)
+		_ = coderdtest.CreateFirstUser(t, client)
+
+		ctx, cancel := context.WithTimeout(context.Background(), testutil.WaitLong)
+		defer cancel()
+
+		o, err := client.CreateOrganization(ctx, codersdk.CreateOrganizationRequest{
+			Name: "something-unique",
+		})
+		require.NoError(t, err)
+
+		_, err = client.UpdateOrganization(ctx, o.ID.String(), codersdk.UpdateOrganizationRequest{
+			Name: codersdk.DefaultOrganization,
+		})
+		var apiErr *codersdk.Error
+		require.ErrorAs(t, err, &apiErr)
+		require.Equal(t, http.StatusBadRequest, apiErr.StatusCode())
+	})
+
+	t.Run("UpdateById", func(t *testing.T) {
+		t.Parallel()
+		client := coderdtest.New(t, nil)
+		_ = coderdtest.CreateFirstUser(t, client)
+
+		ctx, cancel := context.WithTimeout(context.Background(), testutil.WaitLong)
+		defer cancel()
+
+		o, err := client.CreateOrganization(ctx, codersdk.CreateOrganizationRequest{
+			Name: "new",
+		})
+		require.NoError(t, err)
+
+		o, err = client.UpdateOrganization(ctx, o.ID.String(), codersdk.UpdateOrganizationRequest{
+			Name: "new-new",
+		})
+		require.NoError(t, err)
+		require.Equal(t, "new-new", o.Name)
+	})
+
+	t.Run("UpdateByName", func(t *testing.T) {
+		t.Parallel()
+		client := coderdtest.New(t, nil)
+		_ = coderdtest.CreateFirstUser(t, client)
+
+		ctx, cancel := context.WithTimeout(context.Background(), testutil.WaitLong)
+		defer cancel()
+
+		o, err := client.CreateOrganization(ctx, codersdk.CreateOrganizationRequest{
+			Name: "new",
+		})
+		require.NoError(t, err)
+
+		o, err = client.UpdateOrganization(ctx, o.Name, codersdk.UpdateOrganizationRequest{
+			Name: "new-new",
+		})
+		require.NoError(t, err)
+		require.Equal(t, "new-new", o.Name)
+	})
+}
+
+func TestDeleteOrganizationsByUser(t *testing.T) {
+	t.Parallel()
+	t.Run("Default", func(t *testing.T) {
+		t.Parallel()
+		client := coderdtest.New(t, nil)
+		user := coderdtest.CreateFirstUser(t, client)
+
+		ctx, cancel := context.WithTimeout(context.Background(), testutil.WaitLong)
+		defer cancel()
+
+		o, err := client.Organization(ctx, user.OrganizationID)
+		require.NoError(t, err)
+
+		err = client.DeleteOrganization(ctx, o.ID.String())
+		var apiErr *codersdk.Error
+		require.ErrorAs(t, err, &apiErr)
+		require.Equal(t, http.StatusBadRequest, apiErr.StatusCode())
+	})
+
+	t.Run("DeleteById", func(t *testing.T) {
+		t.Parallel()
+		client := coderdtest.New(t, nil)
+		_ = coderdtest.CreateFirstUser(t, client)
+
+		ctx, cancel := context.WithTimeout(context.Background(), testutil.WaitLong)
+		defer cancel()
+
+		o, err := client.CreateOrganization(ctx, codersdk.CreateOrganizationRequest{
+			Name: "doomed",
+		})
+		require.NoError(t, err)
+
+		err = client.DeleteOrganization(ctx, o.ID.String())
+		require.NoError(t, err)
+	})
+
+	t.Run("DeleteByName", func(t *testing.T) {
+		t.Parallel()
+		client := coderdtest.New(t, nil)
+		_ = coderdtest.CreateFirstUser(t, client)
+
+		ctx, cancel := context.WithTimeout(context.Background(), testutil.WaitLong)
+		defer cancel()
+
+		o, err := client.CreateOrganization(ctx, codersdk.CreateOrganizationRequest{
+			Name: "doomed",
+		})
+		require.NoError(t, err)
+
+		err = client.DeleteOrganization(ctx, o.Name)
+		require.NoError(t, err)
+	})
+}
