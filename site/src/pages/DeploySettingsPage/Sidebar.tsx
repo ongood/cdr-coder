@@ -1,4 +1,5 @@
 import Brush from "@mui/icons-material/Brush";
+import TeamsIcon from "@mui/icons-material/Groups";
 import HubOutlinedIcon from "@mui/icons-material/HubOutlined";
 import InsertChartIcon from "@mui/icons-material/InsertChart";
 import LaunchOutlined from "@mui/icons-material/LaunchOutlined";
@@ -12,7 +13,6 @@ import {
   Sidebar as BaseSidebar,
   SidebarNavItem,
 } from "components/Sidebar/Sidebar";
-import TeamsIcon from "@mui/icons-material/Groups";
 
 export const Sidebar: FC = () => {
   return (

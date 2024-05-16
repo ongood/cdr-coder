@@ -1,4 +1,5 @@
 import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
 import { type FC, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import {
@@ -6,7 +7,6 @@ import {
   deleteOrganization,
 } from "api/queries/organizations";
 import { myOrganizations } from "api/queries/users";
-import { TextField } from "@mui/material";
 
 const TeamsSettingsPage: FC = () => {
   const queryClient = useQueryClient();
