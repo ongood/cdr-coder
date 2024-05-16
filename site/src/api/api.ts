@@ -513,6 +513,12 @@ class ApiMethods {
     return response.data;
   };
 
+  deleteOrganization = async (orgId: string) => {
+    await this.axios.delete<TypesGen.Organization>(
+      `/api/v2/organizations/${orgId}`,
+    );
+  };
+
   getOrganization = async (
     organizationId: string,
   ): Promise<TypesGen.Organization> => {
@@ -748,12 +754,10 @@ class ApiMethods {
     return response.data;
   };
 
-  deleteTemplate = async (templateId: string): Promise<TypesGen.Template> => {
-    const response = await this.axios.delete<TypesGen.Template>(
+  deleteTemplate = async (templateId: string) => {
+    await this.axios.delete<TypesGen.Template>(
       `/api/v2/templates/${templateId}`,
     );
-
-    return response.data;
   };
 
   getWorkspace = async (

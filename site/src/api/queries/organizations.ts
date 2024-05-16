@@ -14,3 +14,14 @@ export const createOrganization = (queryClient: QueryClient) => {
     },
   };
 };
+
+export const deleteOrganization = (queryClient: QueryClient) => {
+  return {
+    mutationFn: (orgId: string) => API.deleteOrganization(orgId),
+
+    onSuccess: async () => {
+      await queryClient.invalidateQueries(meKey);
+      await queryClient.invalidateQueries(myOrganizationsKey);
+    },
+  };
+};
